@@ -11,3 +11,18 @@ I "only" have an Oculus Quest 2 for testing, feel free to give feedbacks with ot
 [x] Webcam texture
 [x] Curved rectangle
 [ ] Webrtc implementation
+
+# Usage
+
+* Clone the repo
+
+```
+git clone https://github.com/eviltik/threejs-boilerplate-webpack5
+cd threejs-boilerplate-webpack5
+npm install
+npm run dev
+```
+
+We need webpack5 installed globally `npm install webpack5` atm.
+
+Then, open your browser (https://localhost:44890/)
