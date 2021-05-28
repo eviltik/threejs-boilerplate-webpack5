@@ -8,9 +8,10 @@ I "only" have an Oculus Quest 2 for testing, feel free to give feedbacks with ot
 
 # Videoconference exploration
 
-[x] Webcam texture
-[x] Curved rectangle
-[ ] Webrtc implementation
+* [x] [Webcam texture](https://threejs.innovastorm.com/curved-rectangle/)
+* [x] [Curved rectangle](https://threejs.innovastorm.com/curved-rectangle/)
+* [ ] Webrtc implementation
+
 
 # Usage
 
