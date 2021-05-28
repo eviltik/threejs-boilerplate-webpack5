@@ -15,5 +15,10 @@ module.exports = merge(common, {
 		liveReload:true,
 		writeToDisk: true,
 		serveIndex: true,
+		allowedHosts:[
+			'localhost:44390',
+			'127.0.0.1:44390',
+			'threejs.innovastorm.com'
+		]
 	}
 });
