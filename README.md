@@ -26,4 +26,11 @@ npm run dev
 
 We need webpack5 installed globally `npm install webpack5` atm.
 
-Then, open your browser (https://localhost:44890/)
+Then, open your browser (https://localhost:44390/)
+
+
+# Credits
+
+Thanks to threejs community for help
+
+* prisoner849 (planeCurve)
