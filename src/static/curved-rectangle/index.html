@@ -206,6 +206,48 @@ function initWebcamInput() {
 
 }
 
+
+function planeCurve(g, z){
+	
+
+	if (!g instanceof THREE.PlaneGeometry) {
+		throw new Error('first argument of planeCurve() MUST be an instance of PlaneGeometry');
+		return;
+	}
+
+	let p = g.parameters;
+	let hw = p.width * 0.5;
+	
+	let a = new THREE.Vector2(-hw, 0);
+	let b = new THREE.Vector2(0, z);
+	let c = new THREE.Vector2(hw, 0);
+	
+	let ab = new THREE.Vector2().subVectors(a, b);
+	let bc = new THREE.Vector2().subVectors(b, c);
+	let ac = new THREE.Vector2().subVectors(a, c);
+	
+	let r = (ab.length() * bc.length() * ac.length()) / (2 * Math.abs(ab.cross(ac)));
+	
+	let center = new THREE.Vector2(0, z - r);
+	let baseV = new THREE.Vector2().subVectors(a, center);
+	let baseAngle = baseV.angle() - (Math.PI * 0.5);
+	let arc = baseAngle * 2;
+	
+	let uv = g.attributes.uv;
+	let pos = g.attributes.position;
+	let mainV = new THREE.Vector2();
+
+	for (let i = 0; i < uv.count; i++) {
+		let uvRatio = 1 - uv.getX(i);
+	  	let y = pos.getY(i);
+	  	mainV.copy(c).rotateAround(center, (arc * uvRatio));
+	  	pos.setXYZ(i, mainV.x, y, -mainV.y);
+	}
+	
+	pos.needsUpdate = true;
+	
+  }
+
 function createCurvedPlane() {
 
 	video = document.getElementById( 'video' );
@@ -215,25 +257,10 @@ function createCurvedPlane() {
 	texture.magFilter = THREE.LinearFilter;
 	texture.format = THREE.RGBFormat;
 
-	const geometry = new THREE.PlaneGeometry(16/10, 9/10, 16, 16);
+	const geometry = new THREE.PlaneGeometry(16/10, 9/10, 8, 1);
 	const positions = geometry.attributes.position;
 	
-	const axis = new THREE.Vector3(0, 1, 0);
-	const axisPosition = new THREE.Vector3(-2, 0, 2);
-	const vTemp = new THREE.Vector3(0, 0, 0);
-	let lengthOfArc;
-	let angleOfArc;
-
-	for (let i = 0; i < positions.count; i++){
-		vTemp.fromBufferAttribute(positions, i);
-		lengthOfArc = (vTemp.x - axisPosition.x);
-	  	angleOfArc = (lengthOfArc / axisPosition.z);
-	  	vTemp.setX(0).setZ(-axisPosition.z).applyAxisAngle(axis, -angleOfArc).add(axisPosition);
-	  	positions.setXYZ(i, vTemp.x-1, vTemp.y, vTemp.z);
-	}
-
-	geometry.rotateY(1);
-	geometry.translate(0, 0, -1.6);
+	planeCurve(geometry, 0.1);
 
 	const material = new THREE.MeshBasicMaterial( { map: texture } );
 	material.side = THREE.DoubleSide;
